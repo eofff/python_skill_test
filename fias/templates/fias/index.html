@@ -1,0 +1,14 @@
+{% extends "fias/base.html" %}
+
+{% block title %}ФИАС{% endblock %}
+
+{% block content %}
+<div align="center">
+    <p>Введите запрос:</p>
+    <form action="/" method="post">
+        {% csrf_token %}
+        <input name="addr" type="text" />
+        <input type="submit" text="Поиск" />
+    </form>
+</div>
+{% endblock %}
