@@ -14,4 +14,4 @@ class AddrObj(models.Model):
     short_name = models.CharField(max_length=20, default='')
 
     def __str__(self):
-        return self.official_name
+        return '{} {}'.format(self.short_name, self.official_name)
