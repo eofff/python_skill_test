@@ -7,8 +7,72 @@
     <p>Введите запрос:</p>
     <form action="/" method="post">
         {% csrf_token %}
+        {% if addr %}
+        <input name="addr" type="text" value="{{addr}}" />
+        {% else %}
         <input name="addr" type="text" />
+        {% endif %}
         <input type="submit" text="Поиск" />
     </form>
+    {% for rec in response %}
+    <table border="solid">
+        <tr>
+            <td>{{rec.short_name}}. {{rec.official_name}}</td>
+        </tr>
+        <tr>
+            <td>Актуально:</td>
+            {% if rec.status == 1 %}
+                <td>да</td>
+            {% else %}
+                <td>нет</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>ИФНС ФЛ:</td>
+            {% if rec.IFNSFL != 0 %}
+                <td>{{rec.IFNSFL}}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>ИФНС ЮЛ:</td>
+            {% if rec.IFNSUL != 0 %}
+                <td>{{rec.IFNSUL}}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>ОКАТО:</td>
+            {% if rec.OKATO != 0 %}
+                <td>{{rec.OKATO}}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>ОКТМО:</td>
+            {% if rec.OKTMO != 0 %}
+                <td>{{rec.OKTMO}}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Почтовый индекс:</td>
+            {% if rec.postal_code != 0 %}
+                <td>{{rec.postal_code}}</td>
+            {% else %}
+                <td></td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td>Дата обновления записи:</td>
+            <td>{{rec.update_date}}</td>
+        </tr>
+        <br />
+    </table>
+    {% endfor %}
 </div>
 {% endblock %}
