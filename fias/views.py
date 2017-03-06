@@ -18,10 +18,13 @@ def index(request):
 
 def api_complete_addr(request):
     response = {'result': []}
-    if request.POST:
-        addr = request.POST.get('addr', '')
+    if request.GET:
+        addr = request.GET.get('addr', '')
         if addr != '':
             sql_response = AddrObj.objects.filter(Q(formal_name__startswith=addr) | Q(official_name__startswith=addr))
+            values = []
+            for rec in sql_response:
+                values.append(rec.official_name)
             # exclude not unique values
-            response['result'] = list(set(sql_response[:10]))
+            response['result'] = list(set(values[:10]))
     return HttpResponse(json.dumps(response))

@@ -8,10 +8,11 @@
     <form action="/" method="post">
         {% csrf_token %}
         {% if addr %}
-        <input name="addr" type="text" value="{{addr}}" />
+        <input name="addr" type="text" value="{{addr}}" id="main_edit" list="addr_complete" />
         {% else %}
-        <input name="addr" type="text" />
+        <input name="addr" type="text" id="main_edit" list="addr_complete" />
         {% endif %}
+        <datalist id="addr_complete"></datalist>
         <input type="submit" text="Поиск" />
     </form>
     {% for rec in response %}
@@ -75,4 +76,29 @@
     </table>
     {% endfor %}
 </div>
+<script>
+    var main_edit = document.getElementById("main_edit");
+    var addr_complete = document.getElementById("addr_complete");
+    function update_edit() {
+        var xhr = new XMLHttpRequest();
+
+        var params = "addr=" + encodeURIComponent(main_edit.value);
+
+        xhr.open("GET", "/api_complete_addr?" + params, false);
+        xhr.send();
+        response = JSON.parse(xhr.responseText);
+
+        //clear autocomplete list
+        while (addr_complete.firstChild) {
+            addr_complete.removeChild(addr_complete.firstChild);
+        }
+
+        response.result.forEach(function(item, i, arr) {
+            var option = document.createElement('option');
+            option.value = item;
+            addr_complete.appendChild(option);
+        });
+    }
+    main_edit.addEventListener("input", update_edit, false);
+</script>
 {% endblock %}
