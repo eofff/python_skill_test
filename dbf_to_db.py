@@ -24,7 +24,6 @@ def write_dbf_to_db(path):
         else:
             addr.IFNSUL = 0
         if record.get('OKATO') != '':
-            # print(type(int(record.get('OKATO', 0))))
             addr.OKATO = int(record.get('OKATO', 0))
         else:
             addr.OKATO = 0
