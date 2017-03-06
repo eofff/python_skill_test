@@ -21,5 +21,7 @@ def api_complete_addr(request):
     if request.POST:
         addr = request.POST.get('addr', '')
         if addr != '':
-            response = AddrObj.objects.filter(Q(formal_name__startswith=addr) | Q(official_name__startswith=addr))[:10]
+            sql_response = AddrObj.objects.filter(Q(formal_name__startswith=addr) | Q(official_name__startswith=addr))
+            # exclude not unique values
+            response['result'] = list(set(sql_response[:10]))
     return HttpResponse(json.dumps(response))
