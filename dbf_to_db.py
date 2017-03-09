@@ -11,30 +11,22 @@ django.setup()
 from fias import models
 
 
+def str_to_int(value):
+    response = 0
+    if value != '':
+        response = int(value)
+    return response
+
+
 def write_dbf_to_db(path):
     for record in DBF(path):
         addr = models.AddrObj()
         addr.status = bool(record.get('ACTSTATUS', 0))
-        if record.get('IFNSFL') != '':
-            addr.IFNSFL = int(record.get('IFNSFL', 0))
-        else:
-            addr.IFNSFL = 0
-        if record.get('IFNSUL') != '':
-            addr.IFNSUL = int(record.get('IFNSUL', 0))
-        else:
-            addr.IFNSUL = 0
-        if record.get('OKATO') != '':
-            addr.OKATO = int(record.get('OKATO', 0))
-        else:
-            addr.OKATO = 0
-        if record.get('OKTMO') != '':
-            addr.OKTMO = int(record.get('OKTMO', 0))
-        else:
-            addr.OKTMO = 0
-        if record.get('POSTALCODE') != '':
-            addr.postal_code = int(record.get('POSTALCODE', 0))
-        else:
-            addr.postal_code = 0
+        addr.IFNSFL = str_to_int(record.get('IFNSFL', 0))
+        addr.IFNSUL = str_to_int(record.get('IFNSUL', 0))
+        addr.OKATO = str_to_int(record.get('OKATO', 0))
+        addr.OKTMO = str_to_int(record.get('OKTMO', 0))
+        addr.postal_code = str_to_int(record.get('POSTALCODE', 000000))
         addr.formal_name = record.get('FORMALNAME', '')
         addr.official_name = record.get('OFFNAME', '')
         addr.short_name = record.get('SHORTNAME', '')
